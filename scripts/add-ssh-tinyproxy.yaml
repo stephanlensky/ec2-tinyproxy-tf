@@ -1,0 +1,27 @@
+#cloud-config
+# Add groups to the system
+# Adds the ubuntu group with members 'root' and 'sys'
+# and the empty group hashicorp.
+groups:
+  - ubuntu
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - default
+  - name: ubuntu
+    gecos: ubuntu
+    shell: /bin/bash
+    primary_group: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDkbkSAPH0DIVUtkOCw5NKKw10OTGTCmhioG5ADPaogIwuvlqruM1jYMdAyEN2sgwcSRLI1aXA+G5BvFlJeYWAACQUQirq5mfaqnssJQeQF5mABb9VYakN0zrRSahUon6uIqKViQd7EDJky6/r6wYZeUQyi50yc/MOr/lxNJxjek3O/+VUYkfKA5+JxBGk38wJ6aD6a0eqlRO1M5JRWNqfTe5TV86gj5t5wb++0PO5E+aDa0qMB2sTQPpv0JqKamAPVZFesioo3pIOey7BumJRUFkAwXTKJgrBXOLF0bHbtcraEvn2NtnXmJYW39QKOovsL5ZxRmg+8DytGJTyX0s8qYuya3sa6sEnRkCu+ER/XR6m2DppRgVgOhM8DlkozvtwQ6cCxnrquRP6tzSBZexFKRYfTO670RPhBWlfABXzl9FrVOJtEI+iL9zjfSAlV8Mj3uN2VnHs6pdGg4pygCp0t0dE+Oi3wXirQ0kIJ0znCJVeret/hMex0obKr85OPAOU= cardinal@slensky.com
+
+packages:
+  - tinyproxy
+
+runcmd:
+  - sudo su ubuntu
+  - sudo systemctl enable tinyproxy
+  - sudo systemctl start tinyproxy
