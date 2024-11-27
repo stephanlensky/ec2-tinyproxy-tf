@@ -21,7 +21,21 @@ users:
 packages:
   - tinyproxy
 
+write_files:
+  - path: /run/scripts/configure_tinyproxy.sh
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -e
+      set -x
+      echo "Configuring tinyproxy"
+      cardinal_ip=$(dig +short cardinal.slensky.com)
+      echo "Found cardinal IP: $cardinal_ip"
+      sudo echo "Allow $cardinal_ip" >> /etc/tinyproxy/tinyproxy.conf
+      sudo systemctl restart tinyproxy
+
 runcmd:
   - sudo su ubuntu
   - sudo systemctl enable tinyproxy
   - sudo systemctl start tinyproxy
+  - ["/bin/bash", "/run/scripts/configure_tinyproxy.sh"]

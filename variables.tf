@@ -24,7 +24,7 @@ variable "instance_type" {
 }
 variable "inbound_ipv4_cidr" {
   description = "CIDR block to allow inbound proxy and SSH traffic"
-  default = "0.0.0.0/0"
+  # set to home IP address in tfvars
 }
 variable "proxy_port" {
   type = number
